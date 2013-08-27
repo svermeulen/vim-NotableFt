@@ -1,10 +1,10 @@
 
 " Plugs
-nnoremap <expr> <plug>SearchFForward ':<c-u>call <sid>Search("' . ave#InputChar() . '", "f", "f")<cr>'
-nnoremap <expr> <plug>SearchFBackward ':<c-u>call <sid>Search("' . ave#InputChar() . '", "b", "f")<cr>'
+nnoremap <expr> <plug>SearchFForward ':<c-u>call <sid>Search("' . <sid>InputChar() . '", "f", "f")<cr>'
+nnoremap <expr> <plug>SearchFBackward ':<c-u>call <sid>Search("' . <sid>InputChar() . '", "b", "f")<cr>'
 
-nnoremap <expr> <plug>SearchTForward ':<c-u>call <sid>Search("' . ave#InputChar() . '", "f", "t")<cr>'
-nnoremap <expr> <plug>SearchTBackward ':<c-u>call <sid>Search("' . ave#InputChar() . '", "b", "t")<cr>'
+nnoremap <expr> <plug>SearchTForward ':<c-u>call <sid>Search("' . <sid>InputChar() . '", "f", "t")<cr>'
+nnoremap <expr> <plug>SearchTBackward ':<c-u>call <sid>Search("' . <sid>InputChar() . '", "b", "t")<cr>'
 
 nnoremap <plug>RepeatSearchForward :<c-u>call <sid>RepeatSearchForward()<cr>
 nnoremap <plug>RepeatSearchBackward :<c-u>call <sid>RepeatSearchBackward()<cr>
@@ -12,10 +12,10 @@ nnoremap <plug>RepeatSearchBackward :<c-u>call <sid>RepeatSearchBackward()<cr>
 xnoremap <plug>VisualModeRepeatSearchForward <esc>:call <sid>RepeatSearchForward()<cr>m>gv
 xnoremap <plug>VisualModeRepeatSearchBackward <esc>:call <sid>RepeatSearchBackward()<cr>m>gv
 
-xnoremap <expr> <plug>VisualModeSearchFForward '<esc>:call <sid>Search("'. ave#InputChar() . '", "f", "f")<cr>m>gv'
-xnoremap <expr> <plug>VisualModeSearchFBackward '<esc>:call <sid>Search("'. ave#InputChar() . '", "b", "f")<cr>m>gv'
-xnoremap <expr> <plug>VisualModeSearchTForward '<esc>:call <sid>Search("'. ave#InputChar() . '", "f", "t")<cr>m>gv'
-xnoremap <expr> <plug>VisualModeSearchTBackward '<esc>:call <sid>Search("'. ave#InputChar() . '", "b", "t")<cr>m>gv'
+xnoremap <expr> <plug>VisualModeSearchFForward '<esc>:call <sid>Search("'. <sid>InputChar() . '", "f", "f")<cr>m>gv'
+xnoremap <expr> <plug>VisualModeSearchFBackward '<esc>:call <sid>Search("'. <sid>InputChar() . '", "b", "f")<cr>m>gv'
+xnoremap <expr> <plug>VisualModeSearchTForward '<esc>:call <sid>Search("'. <sid>InputChar() . '", "f", "t")<cr>m>gv'
+xnoremap <expr> <plug>VisualModeSearchTBackward '<esc>:call <sid>Search("'. <sid>InputChar() . '", "b", "t")<cr>m>gv'
 
 " Mappings
 nmap ; <plug>RepeatSearchForward
@@ -37,6 +37,11 @@ let s:lastSearch = 's'
 let s:lastSearchDir = 'f'
 let s:lastSearchType = 'f'
 
+function! s:InputChar()
+    let char = ave#InputChar()
+    return escape(char, '"')
+endfunction
+
 " Functions
 function! s:Search(char, dir, type)
     call s:RunSearch(a:char, a:dir, a:type)
@@ -57,6 +62,13 @@ function! s:RunSearch(searchStr, dir, type)
         else
             let pattern = pattern . '\zs'
         endif
+    endif
+
+    let lineNo = search('\V' . pattern, options . 'n')
+
+    " Only add to jumplist if we're changing line
+    if lineNo != line(".")
+        normal! m`
     endif
 
     call search('\V' . pattern, options)
