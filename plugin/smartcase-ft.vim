@@ -1,10 +1,10 @@
 
 " Plugs
-nnoremap <expr> <plug>SearchFForward ':<c-u>call <sid>Search("' . <sid>InputChar() . '", "f", "f")<cr>'
-nnoremap <expr> <plug>SearchFBackward ':<c-u>call <sid>Search("' . <sid>InputChar() . '", "b", "f")<cr>'
+nnoremap <expr> <silent> <plug>SearchFForward ':<c-u>call <sid>Search("' . <sid>InputChar() . '", "f", "f")<cr>'
+nnoremap <expr> <silent> <plug>SearchFBackward ':<c-u>call <sid>Search("' . <sid>InputChar() . '", "b", "f")<cr>'
 
-nnoremap <expr> <plug>SearchTForward ':<c-u>call <sid>Search("' . <sid>InputChar() . '", "f", "t")<cr>'
-nnoremap <expr> <plug>SearchTBackward ':<c-u>call <sid>Search("' . <sid>InputChar() . '", "b", "t")<cr>'
+nnoremap <expr> <silent> <plug>SearchTForward ':<c-u>call <sid>Search("' . <sid>InputChar() . '", "f", "t")<cr>'
+nnoremap <expr> <silent> <plug>SearchTBackward ':<c-u>call <sid>Search("' . <sid>InputChar() . '", "b", "t")<cr>'
 
 nnoremap <plug>RepeatSearchForward :<c-u>call <sid>RepeatSearchForward()<cr>
 nnoremap <plug>RepeatSearchBackward :<c-u>call <sid>RepeatSearchBackward()<cr>
@@ -12,25 +12,25 @@ nnoremap <plug>RepeatSearchBackward :<c-u>call <sid>RepeatSearchBackward()<cr>
 xnoremap <plug>VisualModeRepeatSearchForward <esc>:call <sid>RepeatSearchForward()<cr>m>gv
 xnoremap <plug>VisualModeRepeatSearchBackward <esc>:call <sid>RepeatSearchBackward()<cr>m>gv
 
-xnoremap <expr> <plug>VisualModeSearchFForward '<esc>:call <sid>Search("'. <sid>InputChar() . '", "f", "f")<cr>m>gv'
-xnoremap <expr> <plug>VisualModeSearchFBackward '<esc>:call <sid>Search("'. <sid>InputChar() . '", "b", "f")<cr>m>gv'
-xnoremap <expr> <plug>VisualModeSearchTForward '<esc>:call <sid>Search("'. <sid>InputChar() . '", "f", "t")<cr>m>gv'
-xnoremap <expr> <plug>VisualModeSearchTBackward '<esc>:call <sid>Search("'. <sid>InputChar() . '", "b", "t")<cr>m>gv'
+xnoremap <expr> <silent> <plug>VisualModeSearchFForward '<esc>:call <sid>Search("'. <sid>InputChar() . '", "f", "f")<cr>m>gv'
+xnoremap <expr> <silent> <plug>VisualModeSearchFBackward '<esc>:call <sid>Search("'. <sid>InputChar() . '", "b", "f")<cr>m>gv'
+xnoremap <expr> <silent> <plug>VisualModeSearchTForward '<esc>:call <sid>Search("'. <sid>InputChar() . '", "f", "t")<cr>m>gv'
+xnoremap <expr> <silent> <plug>VisualModeSearchTBackward '<esc>:call <sid>Search("'. <sid>InputChar() . '", "b", "t")<cr>m>gv'
 
 " Mappings
-nmap ; <plug>RepeatSearchForward
-nmap : <plug>RepeatSearchBackward
-nmap f <plug>SearchFForward
-nmap F <plug>SearchFBackward
-nmap t <plug>SearchTForward
-nmap T <plug>SearchTBackward
+nmap <silent> ; <plug>RepeatSearchForward
+nmap <silent> : <plug>RepeatSearchBackward
+nmap <silent> f <plug>SearchFForward
+nmap <silent> F <plug>SearchFBackward
+nmap <silent> t <plug>SearchTForward
+nmap <silent> T <plug>SearchTBackward
 
-xmap ; <plug>VisualModeRepeatSearchForward
-xmap : <plug>VisualModeRepeatSearchBackward
-xmap f <plug>VisualModeSearchFForward
-xmap F <plug>VisualModeSearchFBackward
-xmap t <plug>VisualModeSearchTForward
-xmap T <plug>VisualModeSearchTBackward
+xmap <silent> ; <plug>VisualModeRepeatSearchForward
+xmap <silent> : <plug>VisualModeRepeatSearchBackward
+xmap <silent> f <plug>VisualModeSearchFForward
+xmap <silent> F <plug>VisualModeSearchFBackward
+xmap <silent> t <plug>VisualModeSearchTForward
+xmap <silent> T <plug>VisualModeSearchTBackward
 
 " Variables
 let s:lastSearch = 's'
