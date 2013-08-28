@@ -39,7 +39,7 @@ let s:lastSearchType = 'f'
 
 function! s:InputChar()
     let char = ave#InputChar()
-    return escape(char, '"')
+    return escape(char, '\"')
 endfunction
 
 " Functions
