@@ -1,36 +1,49 @@
 
 " Plugs
-nnoremap <expr> <silent> <plug>SearchFForward ':<c-u>call <sid>Search("' . <sid>InputChar() . '", "f", "f")<cr>'
-nnoremap <expr> <silent> <plug>SearchFBackward ':<c-u>call <sid>Search("' . <sid>InputChar() . '", "b", "f")<cr>'
-
-nnoremap <expr> <silent> <plug>SearchTForward ':<c-u>call <sid>Search("' . <sid>InputChar() . '", "f", "t")<cr>'
-nnoremap <expr> <silent> <plug>SearchTBackward ':<c-u>call <sid>Search("' . <sid>InputChar() . '", "b", "t")<cr>'
 
 nnoremap <plug>RepeatSearchForward :<c-u>call <sid>RepeatSearchForward()<cr>
 nnoremap <plug>RepeatSearchBackward :<c-u>call <sid>RepeatSearchBackward()<cr>
+nnoremap <expr> <silent> <plug>SearchFForward ':<c-u>call <sid>Search("' . <sid>InputChar() . '", "f", "f")<cr>'
+nnoremap <expr> <silent> <plug>SearchFBackward ':<c-u>call <sid>Search("' . <sid>InputChar() . '", "b", "f")<cr>'
+nnoremap <expr> <silent> <plug>SearchTForward ':<c-u>call <sid>Search("' . <sid>InputChar() . '", "f", "t")<cr>'
+nnoremap <expr> <silent> <plug>SearchTBackward ':<c-u>call <sid>Search("' . <sid>InputChar() . '", "b", "t")<cr>'
 
 xnoremap <plug>VisualModeRepeatSearchForward <esc>:call <sid>RepeatSearchForward()<cr>m>gv
 xnoremap <plug>VisualModeRepeatSearchBackward <esc>:call <sid>RepeatSearchBackward()<cr>m>gv
-
 xnoremap <expr> <silent> <plug>VisualModeSearchFForward '<esc>:call <sid>Search("'. <sid>InputChar() . '", "f", "f")<cr>m>gv'
 xnoremap <expr> <silent> <plug>VisualModeSearchFBackward '<esc>:call <sid>Search("'. <sid>InputChar() . '", "b", "f")<cr>m>gv'
 xnoremap <expr> <silent> <plug>VisualModeSearchTForward '<esc>:call <sid>Search("'. <sid>InputChar() . '", "f", "t")<cr>m>gv'
 xnoremap <expr> <silent> <plug>VisualModeSearchTBackward '<esc>:call <sid>Search("'. <sid>InputChar() . '", "b", "t")<cr>m>gv'
 
+onoremap <plug>OperationModeRepeatSearchForward :call <sid>RepeatSearchForward()<cr>
+onoremap <plug>OperationModeRepeatSearchBackward :call <sid>RepeatSearchBackward()<cr>
+onoremap <expr> <silent> <plug>OperationModeSearchFForward ':call <sid>Search("'. <sid>InputChar() . '", "f", "p")<cr>'
+onoremap <expr> <silent> <plug>OperationModeSearchFBackward ':call <sid>Search("'. <sid>InputChar() . '", "b", "f")<cr>'
+onoremap <expr> <silent> <plug>OperationModeSearchTForward ':call <sid>Search("'. <sid>InputChar() . '", "f", "f")<cr>'
+onoremap <expr> <silent> <plug>OperationModeSearchTBackward ':call <sid>Search("'. <sid>InputChar() . '", "b", "p")<cr>'
+
+" Todo: create an option to set all six mappings then remap them
 " Mappings
 nmap <silent> ; <plug>RepeatSearchForward
 nmap <silent> : <plug>RepeatSearchBackward
 nmap <silent> f <plug>SearchFForward
-nmap <silent> F <plug>SearchFBackward
-nmap <silent> t <plug>SearchTForward
-nmap <silent> T <plug>SearchTBackward
+nmap <silent> t <plug>SearchFBackward
+nmap <silent> ) <plug>SearchTForward
+nmap <silent> ( <plug>SearchTBackward
 
 xmap <silent> ; <plug>VisualModeRepeatSearchForward
 xmap <silent> : <plug>VisualModeRepeatSearchBackward
 xmap <silent> f <plug>VisualModeSearchFForward
-xmap <silent> F <plug>VisualModeSearchFBackward
-xmap <silent> t <plug>VisualModeSearchTForward
-xmap <silent> T <plug>VisualModeSearchTBackward
+xmap <silent> t <plug>VisualModeSearchFBackward
+xmap <silent> ) <plug>VisualModeSearchTForward
+xmap <silent> ( <plug>VisualModeSearchTBackward
+
+omap <silent> ; <plug>OperationModeRepeatSearchForward
+omap <silent> : <plug>OperationModeRepeatSearchBackward
+omap <silent> f <plug>OperationModeSearchFForward
+omap <silent> t <plug>OperationModeSearchFBackward
+omap <silent> ) <plug>OperationModeSearchTForward
+omap <silent> ( <plug>OperationModeSearchTBackward
 
 " Variables
 let s:lastSearch = 's'
@@ -39,11 +52,20 @@ let s:lastSearchType = 'f'
 
 function! s:InputChar()
     let char = ave#InputChar()
+
+    if char ==# ''
+        return ''
+    endif
+
     return escape(char, '\"')
 endfunction
 
 " Functions
 function! s:Search(char, dir, type)
+    if a:char ==# ''
+        return
+    endif
+
     call s:RunSearch(a:char, a:dir, a:type)
     let s:lastSearch = a:char
     let s:lastSearchDir = a:dir
@@ -62,6 +84,8 @@ function! s:RunSearch(searchStr, dir, type)
         else
             let pattern = pattern . '\zs'
         endif
+    elseif a:type ==# 'p'
+        let pattern = pattern . '\zs'
     endif
 
     let lineNo = search('\V' . pattern, options . 'n')
