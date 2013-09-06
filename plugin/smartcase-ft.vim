@@ -45,7 +45,13 @@ omap <silent> 0 <plug>ExtendedFtOperationModeSearchFBackward
 omap <silent> t <plug>ExtendedFtOperationModeSearchTForward
 omap <silent> T <plug>ExtendedFtOperationModeSearchTBackward
 
-" Use 0 for go back since it's so common
+" Allow cancelling substitutions
+nnoremap st<esc> <nop>
+nnoremap sf<esc> <nop>
+nnoremap s0<esc> <nop>
+nnoremap sT<esc> <nop>
+
+" Use 0 for go back since it's more common than 0 (go to start)
 " So swap it
 nnoremap F 0
 xnoremap F 0
