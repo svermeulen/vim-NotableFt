@@ -51,6 +51,12 @@ nnoremap sf<esc> <nop>
 nnoremap s0<esc> <nop>
 nnoremap sT<esc> <nop>
 
+" Allow cancelling substitutions
+nnoremap mt<esc> <nop>
+nnoremap mf<esc> <nop>
+nnoremap m0<esc> <nop>
+nnoremap mT<esc> <nop>
+
 " Use 0 for go back since it's more common than 0 (go to start)
 " So swap it
 nnoremap F 0
