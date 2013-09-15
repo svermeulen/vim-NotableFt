@@ -23,7 +23,7 @@ onoremap <expr> <silent> <plug>ExtendedFtOperationModeSearchTForward ':call <sid
 onoremap <expr> <silent> <plug>ExtendedFtOperationModeSearchTBackward ':call <sid>Search("'. <sid>InputChar() . '", "b", "p")<cr>'
 
 " Variables
-let s:lastSearch = 's'
+let s:lastSearch = ''
 let s:lastSearchDir = 'f'
 let s:lastSearchType = 'f'
 
@@ -76,11 +76,19 @@ function! s:RunSearch(searchStr, dir, type)
 endfunction
 
 function! s:RepeatSearchForward()
-    call s:RunSearch(s:lastSearch, s:lastSearchDir, s:lastSearchType)
+    if empty(s:lastSearch)
+        echo 'Nothing to repeat'
+    else
+        call s:RunSearch(s:lastSearch, s:lastSearchDir, s:lastSearchType)
+    endif
 endfunction
 
 function! s:RepeatSearchBackward()
-    call s:RunSearch(s:lastSearch, (s:lastSearchDir == 'f') ? 'b' : 'f', s:lastSearchType)
+    if empty(s:lastSearch)
+        echo 'Nothing to repeat'
+    else
+        call s:RunSearch(s:lastSearch, (s:lastSearchDir == 'f') ? 'b' : 'f', s:lastSearchType)
+    endif
 endfunction
 
 if !exists('g:ExtendedFTUseDefaults') || g:ExtendedFTUseDefaults
