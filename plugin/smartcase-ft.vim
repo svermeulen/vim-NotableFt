@@ -27,41 +27,38 @@ onoremap <expr> <silent> <plug>ExtendedFtOperationModeSearchTBackward ':call <si
 nmap <silent> ; <plug>ExtendedFtRepeatSearchForward
 nmap <silent> : <plug>ExtendedFtRepeatSearchBackward
 nmap <silent> f <plug>ExtendedFtSearchFForward
-nmap <silent> 0 <plug>ExtendedFtSearchFBackward
-nmap <silent> t <plug>ExtendedFtSearchTForward
-nmap <silent> T <plug>ExtendedFtSearchTBackward
+nmap <silent> t <plug>ExtendedFtSearchFBackward
+
+" We can get away with using ds and sd since they are both
+" motions and unlikely to work with each other anyway
+nmap <silent> sd <plug>ExtendedFtSearchTForward
+nmap <silent> ds <plug>ExtendedFtSearchTBackward
 
 xmap <silent> ; <plug>ExtendedFtVisualModeRepeatSearchForward
 xmap <silent> : <plug>ExtendedFtVisualModeRepeatSearchBackward
 xmap <silent> f <plug>ExtendedFtVisualModeSearchFForward
-xmap <silent> 0 <plug>ExtendedFtVisualModeSearchFBackward
-xmap <silent> t <plug>ExtendedFtVisualModeSearchTForward
-xmap <silent> T <plug>ExtendedFtVisualModeSearchTBackward
+xmap <silent> t <plug>ExtendedFtVisualModeSearchFBackward
+xmap <silent> sd <plug>ExtendedFtVisualModeSearchTForward
+xmap <silent> ds <plug>ExtendedFtVisualModeSearchTBackward
 
 omap <silent> ; <plug>ExtendedFtOperationModeRepeatSearchForward
 omap <silent> : <plug>ExtendedFtOperationModeRepeatSearchBackward
 omap <silent> f <plug>ExtendedFtOperationModeSearchFForward
-omap <silent> 0 <plug>ExtendedFtOperationModeSearchFBackward
-omap <silent> t <plug>ExtendedFtOperationModeSearchTForward
-omap <silent> T <plug>ExtendedFtOperationModeSearchTBackward
+omap <silent> t <plug>ExtendedFtOperationModeSearchFBackward
+omap <silent> sd <plug>ExtendedFtOperationModeSearchTForward
+omap <silent> ds <plug>ExtendedFtOperationModeSearchTBackward
 
 " Allow cancelling substitutions
 nnoremap st<esc> <nop>
 nnoremap sf<esc> <nop>
-nnoremap s0<esc> <nop>
+nnoremap sF<esc> <nop>
 nnoremap sT<esc> <nop>
 
 " Allow cancelling substitutions
 nnoremap mt<esc> <nop>
 nnoremap mf<esc> <nop>
-nnoremap m0<esc> <nop>
+nnoremap mF<esc> <nop>
 nnoremap mT<esc> <nop>
-
-" Use 0 for go back since it's more common than 0 (go to start)
-" So swap it
-nnoremap F 0
-xnoremap F 0
-onoremap F 0
 
 " Variables
 let s:lastSearch = 's'
