@@ -22,44 +22,6 @@ onoremap <expr> <silent> <plug>ExtendedFtOperationModeSearchFBackward ':call <si
 onoremap <expr> <silent> <plug>ExtendedFtOperationModeSearchTForward ':call <sid>Search("'. <sid>InputChar() . '", "f", "f")<cr>'
 onoremap <expr> <silent> <plug>ExtendedFtOperationModeSearchTBackward ':call <sid>Search("'. <sid>InputChar() . '", "b", "p")<cr>'
 
-" Todo: create an option to set all six mappings then remap them
-" Mappings
-nmap <silent> ; <plug>ExtendedFtRepeatSearchForward
-nmap <silent> : <plug>ExtendedFtRepeatSearchBackward
-nmap <silent> f <plug>ExtendedFtSearchFForward
-nmap <silent> t <plug>ExtendedFtSearchFBackward
-
-" We can get away with using ds and sd since they are both
-" motions and unlikely to work with each other anyway
-nmap <silent> sd <plug>ExtendedFtSearchTForward
-nmap <silent> ds <plug>ExtendedFtSearchTBackward
-
-xmap <silent> ; <plug>ExtendedFtVisualModeRepeatSearchForward
-xmap <silent> : <plug>ExtendedFtVisualModeRepeatSearchBackward
-xmap <silent> f <plug>ExtendedFtVisualModeSearchFForward
-xmap <silent> t <plug>ExtendedFtVisualModeSearchFBackward
-xmap <silent> sd <plug>ExtendedFtVisualModeSearchTForward
-xmap <silent> ds <plug>ExtendedFtVisualModeSearchTBackward
-
-omap <silent> ; <plug>ExtendedFtOperationModeRepeatSearchForward
-omap <silent> : <plug>ExtendedFtOperationModeRepeatSearchBackward
-omap <silent> f <plug>ExtendedFtOperationModeSearchFForward
-omap <silent> t <plug>ExtendedFtOperationModeSearchFBackward
-omap <silent> sd <plug>ExtendedFtOperationModeSearchTForward
-omap <silent> ds <plug>ExtendedFtOperationModeSearchTBackward
-
-" Allow cancelling substitutions
-nnoremap st<esc> <nop>
-nnoremap sf<esc> <nop>
-nnoremap sF<esc> <nop>
-nnoremap sT<esc> <nop>
-
-" Allow cancelling substitutions
-nnoremap mt<esc> <nop>
-nnoremap mf<esc> <nop>
-nnoremap mF<esc> <nop>
-nnoremap mT<esc> <nop>
-
 " Variables
 let s:lastSearch = 's'
 let s:lastSearchDir = 'f'
