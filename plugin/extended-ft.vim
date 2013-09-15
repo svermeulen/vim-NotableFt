@@ -82,3 +82,26 @@ endfunction
 function! s:RepeatSearchBackward()
     call s:RunSearch(s:lastSearch, (s:lastSearchDir == 'f') ? 'b' : 'f', s:lastSearchType)
 endfunction
+
+if !exists('g:ExtendedFTUseDefaults') || g:ExtendedFTUseDefaults
+    nmap <silent> ; <plug>ExtendedFtRepeatSearchForward
+    nmap <silent> , <plug>ExtendedFtRepeatSearchBackward
+    nmap <silent> f <plug>ExtendedFtSearchFForward
+    nmap <silent> F <plug>ExtendedFtSearchFBackward
+    nmap <silent> t <plug>ExtendedFtSearchTForward
+    nmap <silent> T <plug>ExtendedFtSearchTBackward
+
+    xmap <silent> ; <plug>ExtendedFtVisualModeRepeatSearchForward
+    xmap <silent> , <plug>ExtendedFtVisualModeRepeatSearchBackward
+    xmap <silent> f <plug>ExtendedFtVisualModeSearchFForward
+    xmap <silent> F <plug>ExtendedFtVisualModeSearchFBackward
+    xmap <silent> t <plug>ExtendedFtVisualModeSearchTForward
+    xmap <silent> T <plug>ExtendedFtVisualModeSearchTBackward
+
+    omap <silent> ; <plug>ExtendedFtOperationModeRepeatSearchForward
+    omap <silent> , <plug>ExtendedFtOperationModeRepeatSearchBackward
+    omap <silent> f <plug>ExtendedFtOperationModeSearchFForward
+    omap <silent> F <plug>ExtendedFtOperationModeSearchFBackward
+    omap <silent> t <plug>ExtendedFtOperationModeSearchTForward
+    omap <silent> T <plug>ExtendedFtOperationModeSearchTBackward
+endif
