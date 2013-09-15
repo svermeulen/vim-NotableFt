@@ -28,7 +28,7 @@ let s:lastSearchDir = 'f'
 let s:lastSearchType = 'f'
 
 function! s:InputChar()
-    let char = ave#InputChar()
+    let char = nr2char(getchar())
 
     if char ==# ''
         return ''
