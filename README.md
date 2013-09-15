@@ -1,4 +1,6 @@
-vim-smartcase-ft
+vim-extendedFT
 ================
 
-This plugin changes the default behaviour of 'f', 'F', 't', and 'T' commands in Vim to use 'smart case' style searching.   That is, when the character is lower case it matches both lower and upper case, and when the character is uppercase it matches only upper case.
+This plugin makes the following changes to the default behaviour of the `f`, `F`, `t`, and `T` commands:
+- Multiline - Can continue searching using `;` and `,` keys across multiple lines
+- Smart Case - When the search character is lower case it matches both lower and upper case, and when the character is uppercase it matches only upper case.
