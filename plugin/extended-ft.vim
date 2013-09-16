@@ -1,26 +1,26 @@
 
 " Plugs
 
-nnoremap <plug>ExtendedFtRepeatSearchForward :<c-u>call <sid>RepeatSearchForward()<cr>
-nnoremap <plug>ExtendedFtRepeatSearchBackward :<c-u>call <sid>RepeatSearchBackward()<cr>
-nnoremap <expr> <silent> <plug>ExtendedFtSearchFForward ':<c-u>call <sid>Search("' . <sid>InputChar() . '", "f", "f")<cr>'
-nnoremap <expr> <silent> <plug>ExtendedFtSearchFBackward ':<c-u>call <sid>Search("' . <sid>InputChar() . '", "b", "f")<cr>'
-nnoremap <expr> <silent> <plug>ExtendedFtSearchTForward ':<c-u>call <sid>Search("' . <sid>InputChar() . '", "f", "t")<cr>'
-nnoremap <expr> <silent> <plug>ExtendedFtSearchTBackward ':<c-u>call <sid>Search("' . <sid>InputChar() . '", "b", "t")<cr>'
+nnoremap <plug>ExtendedFtRepeatSearchForward :<c-u>call <sid>RepeatSearchForward(v:count, 'n')<cr>
+nnoremap <plug>ExtendedFtRepeatSearchBackward :<c-u>call <sid>RepeatSearchBackward(v:count)<cr>
+nnoremap <expr> <silent> <plug>ExtendedFtSearchFForward ':<c-u>call <sid>Search('. v:count . ', "' . <sid>InputChar() . '", "f", "f")<cr>'
+nnoremap <expr> <silent> <plug>ExtendedFtSearchFBackward ':<c-u>call <sid>Search('. v:count . ', "' . <sid>InputChar() . '", "b", "f")<cr>'
+nnoremap <expr> <silent> <plug>ExtendedFtSearchTForward ':<c-u>call <sid>Search('. v:count . ', "' . <sid>InputChar() . '", "f", "t")<cr>'
+nnoremap <expr> <silent> <plug>ExtendedFtSearchTBackward ':<c-u>call <sid>Search('. v:count . ', "' . <sid>InputChar() . '", "b", "t")<cr>'
 
-xnoremap <plug>ExtendedFtVisualModeRepeatSearchForward <esc>:call <sid>RepeatSearchForward()<cr>m>gv
-xnoremap <plug>ExtendedFtVisualModeRepeatSearchBackward <esc>:call <sid>RepeatSearchBackward()<cr>m>gv
-xnoremap <expr> <silent> <plug>ExtendedFtVisualModeSearchFForward '<esc>:call <sid>Search("'. <sid>InputChar() . '", "f", "f")<cr>m>gv'
-xnoremap <expr> <silent> <plug>ExtendedFtVisualModeSearchFBackward '<esc>:call <sid>Search("'. <sid>InputChar() . '", "b", "f")<cr>m>gv'
-xnoremap <expr> <silent> <plug>ExtendedFtVisualModeSearchTForward '<esc>:call <sid>Search("'. <sid>InputChar() . '", "f", "t")<cr>m>gv'
-xnoremap <expr> <silent> <plug>ExtendedFtVisualModeSearchTBackward '<esc>:call <sid>Search("'. <sid>InputChar() . '", "b", "t")<cr>m>gv'
+xnoremap <expr> <plug>ExtendedFtVisualModeRepeatSearchForward '<esc>:<c-u>call <sid>RepeatSearchForward('. v:count . ', "x")<cr>m>gv'
+xnoremap <expr> <plug>ExtendedFtVisualModeRepeatSearchBackward '<esc>:<c-u>call <sid>RepeatSearchBackward('. v:count . ')<cr>m>gv'
+xnoremap <expr> <silent> <plug>ExtendedFtVisualModeSearchFForward ':<c-u>call <sid>Search('. v:count . ', "'. <sid>InputChar() . '", "f", "f")<cr>m>gv'
+xnoremap <expr> <silent> <plug>ExtendedFtVisualModeSearchFBackward ':<c-u>call <sid>Search('. v:count . ', "'. <sid>InputChar() . '", "b", "f")<cr>m>gv'
+xnoremap <expr> <silent> <plug>ExtendedFtVisualModeSearchTForward ':<c-u>call <sid>Search('. v:count . ', "'. <sid>InputChar() . '", "f", "t")<cr>m>gv'
+xnoremap <expr> <silent> <plug>ExtendedFtVisualModeSearchTBackward ':<c-u>call <sid>Search('. v:count . ', "'. <sid>InputChar() . '", "b", "t")<cr>m>gv'
 
-onoremap <plug>ExtendedFtOperationModeRepeatSearchForward :call <sid>RepeatSearchForward()<cr>
-onoremap <plug>ExtendedFtOperationModeRepeatSearchBackward :call <sid>RepeatSearchBackward()<cr>
-onoremap <expr> <silent> <plug>ExtendedFtOperationModeSearchFForward ':call <sid>Search("'. <sid>InputChar() . '", "f", "p")<cr>'
-onoremap <expr> <silent> <plug>ExtendedFtOperationModeSearchFBackward ':call <sid>Search("'. <sid>InputChar() . '", "b", "f")<cr>'
-onoremap <expr> <silent> <plug>ExtendedFtOperationModeSearchTForward ':call <sid>Search("'. <sid>InputChar() . '", "f", "f")<cr>'
-onoremap <expr> <silent> <plug>ExtendedFtOperationModeSearchTBackward ':call <sid>Search("'. <sid>InputChar() . '", "b", "p")<cr>'
+onoremap <plug>ExtendedFtOperationModeRepeatSearchForward :call <sid>RepeatSearchForward(v:count, 'o')<cr>
+onoremap <plug>ExtendedFtOperationModeRepeatSearchBackward :call <sid>RepeatSearchBackward(v:count)<cr>
+onoremap <expr> <silent> <plug>ExtendedFtOperationModeSearchFForward ':call <sid>Search('. v:count . ', "'. <sid>InputChar() . '", "f", "p")<cr>'
+onoremap <expr> <silent> <plug>ExtendedFtOperationModeSearchFBackward ':call <sid>Search('. v:count . ', "'. <sid>InputChar() . '", "b", "f")<cr>'
+onoremap <expr> <silent> <plug>ExtendedFtOperationModeSearchTForward ':call <sid>Search('. v:count . ', "'. <sid>InputChar() . '", "f", "f")<cr>'
+onoremap <expr> <silent> <plug>ExtendedFtOperationModeSearchTBackward ':call <sid>Search('. v:count . ', "'. <sid>InputChar() . '", "b", "p")<cr>'
 
 " Variables
 let s:lastSearch = ''
@@ -38,18 +38,18 @@ function! s:InputChar()
 endfunction
 
 " Functions
-function! s:Search(char, dir, type)
+function! s:Search(count, char, dir, type)
     if a:char ==# ''
         return
     endif
 
-    call s:RunSearch(a:char, a:dir, a:type)
+    call s:RunSearch(a:count, a:char, a:dir, a:type)
     let s:lastSearch = a:char
     let s:lastSearchDir = a:dir
     let s:lastSearchType = a:type
 endfunction
 
-function! s:RunSearch(searchStr, dir, type)
+function! s:RunSearch(count, searchStr, dir, type)
     let caseOption = (a:searchStr =~# '\v\u') ? '\C' : '\c'
     let options = (a:dir ==# 'f') ? 'W' : 'Wb'
 
@@ -65,29 +65,38 @@ function! s:RunSearch(searchStr, dir, type)
         let pattern = pattern . '\zs'
     endif
 
-    let lineNo = search('\V' . pattern, options . 'n')
+    let cnt = a:count > 0 ? a:count : 1 
 
-    " Only add to jumplist if we're changing line
-    if lineNo != line(".")
-        normal! m`
-    endif
+    for i in range(cnt)
+        let lineNo = search('\V' . pattern, options . 'n')
 
-    call search('\V' . pattern, options)
+        " Only add to jumplist if we're changing line
+        if lineNo != line(".")
+            normal! m`
+        endif
+
+        call search('\V' . pattern, options)
+    endfor
 endfunction
 
-function! s:RepeatSearchForward()
+function! s:RepeatSearchForward(count, mode)
     if empty(s:lastSearch)
         echo 'Nothing to repeat'
     else
-        call s:RunSearch(s:lastSearch, s:lastSearchDir, s:lastSearchType)
+        call s:RunSearch(a:count, s:lastSearch, s:lastSearchDir, s:lastSearchType)
+
+        if a:mode ==# 'o' && s:lastSearchDir ==# 'f'
+            " Not 100% sure why this is necessary in this case but it is
+            normal! l
+        endif
     endif
 endfunction
 
-function! s:RepeatSearchBackward()
+function! s:RepeatSearchBackward(count)
     if empty(s:lastSearch)
         echo 'Nothing to repeat'
     else
-        call s:RunSearch(s:lastSearch, (s:lastSearchDir == 'f') ? 'b' : 'f', s:lastSearchType)
+        call s:RunSearch(a:count, s:lastSearch, (s:lastSearchDir == 'f') ? 'b' : 'f', s:lastSearchType)
     endif
 endfunction
 
