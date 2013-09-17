@@ -50,7 +50,12 @@ function! s:Search(count, char, dir, type)
 endfunction
 
 function! s:RunSearch(count, searchStr, dir, type)
-    let caseOption = (a:searchStr =~# '\v\u') ? '\C' : '\c'
+    if !exists('g:ExtendedFT_caseOption')
+        let caseOption = (a:searchStr =~# '\v\u') ? '\C' : '\c'
+    else
+        let caseOption = g:ExtendedFT_caseOption
+    endif
+
     let options = (a:dir ==# 'f') ? 'W' : 'Wb'
 
     let pattern = caseOption . a:searchStr
@@ -65,7 +70,7 @@ function! s:RunSearch(count, searchStr, dir, type)
         let pattern = pattern . '\zs'
     endif
 
-    let cnt = a:count > 0 ? a:count : 1 
+    let cnt = a:count > 0 ? a:count : 1
 
     for i in range(cnt)
         let lineNo = search('\V' . pattern, options . 'n')
