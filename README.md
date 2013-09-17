@@ -16,7 +16,7 @@ If you have remapped any of the `f`/`F`/`t`/`T`/`;`/`,` keys you can still use t
 
 And then remapping the desired keys to the `<plug>` mappings in your .vimrc (see the bottom of the file vim-extended-ft.vim for an example).
 
-To force enable or disable smartcase matching, use this option in your .vimrc:
+To disable smartcase matching, and either force case-sensitive or case-insensitive, use this option in your .vimrc:
 
 `let g:ExtendedFT_caseOption = `
 
