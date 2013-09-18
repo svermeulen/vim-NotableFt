@@ -22,5 +22,5 @@ To force enable or disable smartcase matching, use this option in your .vimrc:
 
 Possible values:
 
-* \c - Forces `ignorecase`
-* \C - Forces `noignorecase`
+* '\c' - Forces `ignorecase`
+* '\C' - Forces `noignorecase`
