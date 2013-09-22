@@ -22,5 +22,5 @@ To disable smartcase matching, and either force case-sensitive or case-insensiti
 
 Possible values:
 
-* \c - Forces `ignorecase`
-* \C - Forces `noignorecase`
+* '\c' - Forces `ignorecase`
+* '\C' - Forces `noignorecase`
