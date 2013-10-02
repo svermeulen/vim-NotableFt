@@ -24,3 +24,7 @@ Possible values:
 
 * '\c' - Forces `ignorecase`
 * '\C' - Forces `noignorecase`
+
+
+[![Bitdeli Badge](https://d2weczhvl823v0.cloudfront.net/svermeulen/vim-extended-ft/trend.png)](https://bitdeli.com/free "Bitdeli Badge")
+
