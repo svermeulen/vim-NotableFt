@@ -22,11 +22,22 @@ onoremap <expr> <silent> <plug>ExtendedFtOperationModeSearchFBackward ':call <si
 onoremap <expr> <silent> <plug>ExtendedFtOperationModeSearchTForward ':call <sid>Search('. v:count . ', "'. <sid>InputChar() . '", "f", "f")<cr>'
 onoremap <expr> <silent> <plug>ExtendedFtOperationModeSearchTBackward ':call <sid>Search('. v:count . ', "'. <sid>InputChar() . '", "b", "p")<cr>'
 
+" Seek = search using two characters instead of just one
+nnoremap <expr> <silent> <plug>ExtendedFtSearchSForward ':<c-u>call <sid>Search('. v:count . ', "' . <sid>InputChar() . <sid>InputChar() . '", "f", "f")<cr>'
+nnoremap <expr> <silent> <plug>ExtendedFtSearchSBackward ':<c-u>call <sid>Search('. v:count . ', "' . <sid>InputChar() . <sid>InputChar() . '", "b", "f")<cr>'
+
+xnoremap <expr> <silent> <plug>ExtendedFtVisualModeSearchSForward ':<c-u>call <sid>Search('. v:count . ', "'. <sid>InputChar() . <sid>InputChar() . '", "f", "f")<cr>m>gv'
+xnoremap <expr> <silent> <plug>ExtendedFtVisualModeSearchSBackward ':<c-u>call <sid>Search('. v:count . ', "'. <sid>InputChar() . <sid>InputChar() . '", "b", "f")<cr>m>gv'
+
+onoremap <expr> <silent> <plug>ExtendedFtOperationModeSearchSForward ':call <sid>Search('. v:count . ', "'. <sid>InputChar() . <sid>InputChar() . '", "f", "p")<cr>'
+onoremap <expr> <silent> <plug>ExtendedFtOperationModeSearchSBackward ':call <sid>Search('. v:count . ', "'. <sid>InputChar() . <sid>InputChar() . '", "b", "f")<cr>'
+
 " Variables
 let s:lastSearch = ''
 let s:lastSearchDir = 'f'
 let s:lastSearchType = 'f'
 
+" Functions
 function! s:InputChar()
     let char = nr2char(getchar())
 
@@ -37,8 +48,20 @@ function! s:InputChar()
     return escape(char, '\"')
 endfunction
 
-" Functions
+function! s:RemoveHighlight()
+    silent! call matchdelete(w:highlightId)
+endf
+
+function! s:AttachAutoCommands()
+    augroup ExtendedFtHighlight
+        autocmd!
+        autocmd InsertEnter,WinLeave,BufLeave <buffer> call <sid>RemoveHighlight() | autocmd! ExtendedFtHighlight * <buffer>
+        autocmd CursorMoved <buffer> autocmd ExtendedFtHighlight CursorMoved <buffer> call <sid>RemoveHighlight() | autocmd! ExtendedFtHighlight * <buffer>
+    augroup END
+endf
+
 function! s:Search(count, char, dir, type)
+
     if a:char ==# ''
         return
     endif
@@ -47,6 +70,7 @@ function! s:Search(count, char, dir, type)
     let s:lastSearch = a:char
     let s:lastSearchDir = a:dir
     let s:lastSearchType = a:type
+
 endfunction
 
 function! s:RunSearch(count, searchStr, dir, type)
@@ -82,6 +106,18 @@ function! s:RunSearch(count, searchStr, dir, type)
 
         call search('\V' . pattern, options)
     endfor
+
+    call s:RemoveHighlight()
+    call s:AttachAutoCommands()
+
+    let matchQuery = pattern
+
+    if len(a:searchStr) == 1
+        let currentLine = line('.')
+        let matchQuery = matchQuery .'\%'.currentLine.'l'
+    endif
+
+    let w:highlightId = matchadd('Search', matchQuery, 2, get(w:, 'highlightId', -1))
 endfunction
 
 function! s:RepeatSearchForward(count, mode)
@@ -126,4 +162,13 @@ if !exists('g:ExtendedFTUseDefaults') || g:ExtendedFTUseDefaults
     omap <silent> F <plug>ExtendedFtOperationModeSearchFBackward
     omap <silent> t <plug>ExtendedFtOperationModeSearchTForward
     omap <silent> T <plug>ExtendedFtOperationModeSearchTBackward
+
+    " Uncomment or copy/paste to your own vimrc to use seek operator
+    "nmap <silent> s <plug>ExtendedFtSearchSForward
+    "xmap <silent> s <plug>ExtendedFtVisualModeSearchSForward
+    "omap <silent> s <plug>ExtendedFtOperationModeSearchSForward
+
+    "nmap <silent> S <plug>ExtendedFtSearchSBackward
+    "xmap <silent> S <plug>ExtendedFtVisualModeSearchSBackward
+    "omap <silent> S <plug>ExtendedFtOperationModeSearchSBackward
 endif
