@@ -8,6 +8,10 @@ This plugin adds the following behaviour to the default behaviour of the `f`, `F
 
 It's also worth noting that it only adds the new position to the jumplist if you've changed lines.
 
+###Seek Operator###
+
+vim-extended-ft also includes an option to use a version of the `f` and `F` operator with two characters instead of one.  This is disabled by default but can be enabled easily by including extra mappings in your vimrc.  See the bottom of the file `extended-ft.vim` for an example (commented out) of what those mappings would look like.
+
 ###Customization###
 
 If you have remapped any of the `f`/`F`/`t`/`T`/`;`/`,` keys you can still use the plugin without changing it, by including the following in your .vimrc:
