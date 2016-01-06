@@ -26,7 +26,7 @@ This plugin also adds the following behaviour:
 - Highlighting - Highlights all matching characters on current line, previous matching line, and next matching line
 - Allows repeating `t` and `T` commands using `;` or `,` commands
 
-It's also worth noting that it only adds the new position to the jumplist if you've changed lines.
+It's also worth noting that it only adds the new position to the jumplist if you've changed lines
 
 ###Customization###
 
@@ -34,5 +34,14 @@ If you have remapped any of the `f`/`F`/`t`/`T`/`;`/`,` keys you can still use t
 
 `let g:NotableFtUseDefaults = 0`
 
-And then remapping the desired keys to the `<plug>` mappings in your .vimrc (see the bottom of the file NotableFt.vim for an example).
+With this set, NotableFT will not remap anything.  You can then remap whatever keys you want to the following `<plug>NotableFt` mappings:
+
+    <plug>NotableFtRepeatSearchForward
+    <plug>NotableFtRepeatSearchBackward
+    <plug>NotableFtSearchFForward
+    <plug>NotableFtSearchFBackward
+    <plug>NotableFtSearchTForward
+    <plug>NotableFtSearchTBackward
+
+See the file `NotableFt.vim` for an example of how to map to these.
 
