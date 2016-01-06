@@ -81,6 +81,14 @@ endfunction
 function! s:InputChar()
     let charNr = getchar()
 
+    if charNr ==# '€F7'
+        return 'bracketOpen'
+    endif
+
+    if charNr ==# '€F8'
+        return 'bracketClose'
+    endif
+
     let char = nr2char(charNr)
 
     if char == ''
@@ -136,8 +144,23 @@ function! s:GetPatternFromInput(searchStr, type, dir, forHighlight)
     let bolOrNonWordChar = '\(' . nonWordChar . '\|\^\)' 
     let eolOrNonWordChar = '\(' . nonWordChar . '\|\$\)' 
 
-    if a:searchStr ==# '\'
+    if a:searchStr ==# '-'
+        " Apply smart case to key '-'
+        let searchStr = '\(-\|_\)'
+
+    elseif a:searchStr ==# '\'
         let searchStr = '\\'
+
+    elseif a:searchStr ==# 'bracketOpen'
+        let searchStr = '\((\|[\|<\|{\)'
+        "let searchStr = '\((\)'
+
+    elseif a:searchStr ==# "'"
+        let searchStr = '\(''\|"\)'
+
+    elseif a:searchStr ==# 'bracketClose'
+        let searchStr = '\()\|]\|>\|}\)'
+        "let searchStr = '\()\)'
     else
         let searchStr = a:searchStr
     endif
