@@ -268,7 +268,14 @@ function! s:RepeatSearchForward(count, mode)
         echo 'Nothing to repeat'
     else
         let shouldSaveMark = (get(w:, "charHighlightId", -1) == -1)
-        call s:RunSearch(a:count, s:lastSearch, 'f', s:lastSearchType, shouldSaveMark, a:mode)
+
+        if get(g:, 'NotableFtUseFixedDirection', 0)
+            let dir = 'f'
+        else
+            let dir = s:lastSearchDir
+        endif
+
+        call s:RunSearch(a:count, s:lastSearch, dir, s:lastSearchType, shouldSaveMark, a:mode)
 
         if a:mode ==# 'o'
             " Not 100% sure why this is necessary in this case but it is
@@ -282,6 +289,17 @@ function! s:RepeatSearchBackward(count, mode)
         echo 'Nothing to repeat'
     else
         let shouldSaveMark = (get(w:, "charHighlightId", -1) == -1)
-        call s:RunSearch(a:count, s:lastSearch, 'b', s:lastSearchType, shouldSaveMark, a:mode)
+
+        if get(g:, 'NotableFtUseFixedDirection', 0)
+            let dir = 'b'
+        else
+            if s:lastSearchDir == 'b'
+                let dir = 'f'
+            else
+                let dir = 'b'
+            endif
+        endif
+
+        call s:RunSearch(a:count, s:lastSearch, dir, s:lastSearchType, shouldSaveMark, a:mode)
     endif
 endfunction
