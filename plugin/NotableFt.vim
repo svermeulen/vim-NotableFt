@@ -78,6 +78,10 @@ function! s:AttachSearchToggleAutoCommands()
     augroup END
 endfunction
 
+function! s:IsMultiLine()
+    return exists('g:NotableFtSingleLine') && g:NotableFtSingleLine
+endfunction
+
 function! s:InputChar()
     let charNr = getchar()
 
