@@ -28,7 +28,7 @@ This plugin also adds the following behaviour:
 
 It's also worth noting that it only adds the new position to the jumplist if you've changed lines
 
-###Search Direction###
+## Search Direction ##
 
 By default, NotableFt will preserve Vim's behaviour of searching left-to-right with `;` after using `f`, and searching right-to-left with `;` when using `t`.  However, it also includes an alternative approach, which uses fixed directions for the `;` and `,` keys.  So if that's something you want to use instead, you can enable it by including the following in your .vimrc:
 
@@ -36,7 +36,7 @@ By default, NotableFt will preserve Vim's behaviour of searching left-to-right w
 
 In other words, when this option is enabled, the `;` key will always go left-to-right, and the `,` key will always go right-to-left.
 
-###Key Customization###
+## Key Customization ##
 
 If you have remapped any of the `f`/`F`/`t`/`T`/`;`/`,` keys you can still use the plugin without changing it, by including the following in your .vimrc:
 
