@@ -80,7 +80,6 @@ endfunction
 
 function! s:InputChar()
     let charNr = getchar()
-
     let char = nr2char(charNr)
 
     if char == ''
@@ -128,40 +127,107 @@ function! s:Search(count, char, dir, type, mode)
     endif
 endfunction
 
-function! s:GetPatternFromInput(searchStr, type, dir, forHighlight)
-
-    "echom 'running with ' . 'forHighlight = ' . a:forHighlight . ', dir = ' . a:dir . ', type = ' . a:type . ', searchStr = ' . a:searchStr
+function! s:GetPatternFromInput(searchStr, type, forHighlight)
 
     let nonWordChar = '\(\W\|_\)'
     let bolOrNonWordChar = '\(' . nonWordChar . '\|\^\)' 
-    let eolOrNonWordChar = '\(' . nonWordChar . '\|\$\)' 
+    let uppercaseChar = '\[A-Z]'
+    let eolOrNonWordOrUpperCaseChar = '\(' . nonWordChar . '\|\$\|\[A-Z]\)' 
 
-    if a:searchStr ==# '\'
-        let searchStr = '\\'
+    if a:searchStr ==# ','
+        let searchStr = '\(,\|<\)'
+
+    elseif a:searchStr ==# '.'
+        let searchStr = '\(.\|>\)'
+
+    elseif a:searchStr ==# '`'
+        let searchStr = '\(`\|~\)'
+
+    elseif a:searchStr ==# '1'
+        let searchStr = '\(1\|!\)'
+
+    elseif a:searchStr ==# '2'
+        let searchStr = '\(2\|@\)'
+
+    elseif a:searchStr ==# '3'
+        let searchStr = '\(3\|#\)'
+
+    elseif a:searchStr ==# '4'
+        let searchStr = '\(4\|$\)'
+
+    elseif a:searchStr ==# '5'
+        let searchStr = '\(5\|%\)'
+
+    elseif a:searchStr ==# '6'
+        let searchStr = '\(6\|^\)'
+
+    elseif a:searchStr ==# '7'
+        let searchStr = '\(7\|&\)'
+
+    elseif a:searchStr ==# '8'
+        let searchStr = '\(8\|*\)'
+
+    elseif a:searchStr ==# '9'
+        let searchStr = '\(9\|(\)'
+
+    elseif a:searchStr ==# '0'
+        let searchStr = '\(0\|)\)'
+
+    elseif a:searchStr ==# '='
+        let searchStr = '\(=\|+\)'
+
+    elseif a:searchStr ==# '['
+        let searchStr = '\([\|{\)'
+
+    elseif a:searchStr ==# ']'
+        let searchStr = '\(]\|}\)'
+
+    elseif a:searchStr ==# '\'
+        let searchStr = '\(\\\||\)'
+
+    elseif a:searchStr ==# '/'
+        let searchStr = '\(/\|?\)'
+
+    elseif a:searchStr ==# '-'
+        let searchStr = '\(-\|_\)'
+
+    elseif a:searchStr ==# ';'
+        let searchStr = '\(;\|:\)'
+
+    elseif a:searchStr ==# "'"
+        let searchStr = '\(''\|"\)'
+
     else
         let searchStr = a:searchStr
     endif
 
     if searchStr =~# '\v[A-Z]'
-        return '\c' . tolower(searchStr)
-
+        if a:type ==# 'f' || a:type ==# 'p' || a:forHighlight
+            return '\c' . tolower(searchStr)
+        else
+            if s:lastSearchDir == 'f'
+                return '\c\zs\.' . tolower(searchStr)
+            else
+                return '\c' . tolower(searchStr) . '\zs\.'
+            endif
+        endif
     else
         if a:type ==# 'f' || a:type ==# 'p'
-            return '\C\(' . searchStr . '\ze' . eolOrNonWordChar . '\|'. bolOrNonWordChar . '\zs' . searchStr . '\|' . toupper(searchStr) . '\)'
+            return '\C\(' . searchStr . '\ze' . eolOrNonWordOrUpperCaseChar . '\|' . bolOrNonWordChar . '\zs' . searchStr . '\|' . toupper(searchStr) . '\)'
         else
-            if a:dir == 'f'
+            if s:lastSearchDir == 'f'
                 if a:forHighlight
-                    return '\C\(' . nonWordChar . '\zs' . searchStr . '\|\.\zs'. searchStr . '\ze' . eolOrNonWordChar . '\|\.\zs' . toupper(searchStr) . '\)'
+                    return '\C\(' . nonWordChar . '\zs' . searchStr . '\|\.\zs'. searchStr . '\ze' . eolOrNonWordOrUpperCaseChar . '\|\.\zs' . toupper(searchStr) . '\)'
                 else
-                    return '\C\(' . nonWordChar . searchStr . '\|\.'. searchStr . '\ze' . eolOrNonWordChar . '\|\.' . toupper(searchStr) . '\)'
+                    return '\C\(' . nonWordChar . searchStr . '\|\.'. searchStr . '\ze' . eolOrNonWordOrUpperCaseChar . '\|\.' . toupper(searchStr) . '\)'
                 endif
             else
-                call s:Assert(a:dir ==# 'b')
+                call s:Assert(s:lastSearchDir ==# 'b')
 
                 if a:forHighlight
-                    return '\C\(' . bolOrNonWordChar . '\zs' . searchStr . '\|\.\zs'. searchStr . '\ze' . eolOrNonWordChar . '\|\.\zs' . toupper(searchStr) . '\)'
+                    return '\C\(' . bolOrNonWordChar . '\zs' . searchStr . '\|\.\zs'. searchStr . '\ze' . eolOrNonWordOrUpperCaseChar . '\|\.\zs' . toupper(searchStr) . '\)'
                 else
-                    return '\C\(' . bolOrNonWordChar . searchStr . '\zs\|\.'. searchStr . '\zs' . eolOrNonWordChar . '\|\.' . toupper(searchStr) . '\zs\)'
+                    return '\C\(' . bolOrNonWordChar . searchStr . '\zs\|\.'. searchStr . '\zs' . eolOrNonWordOrUpperCaseChar . '\|\.' . toupper(searchStr) . '\zs\)'
                 endif
             endif
         endif
@@ -175,7 +241,7 @@ function! s:RunSearch(count, searchStr, dir, type, shouldSaveMark, mode)
     call s:Assert(a:dir == 'f' || a:dir == 'b')
     call s:Assert(a:type == 'f' || a:type == 't' || a:type == 'p')
 
-    let pattern = s:GetPatternFromInput(a:searchStr, a:type, a:dir, 0)
+    let pattern = s:GetPatternFromInput(a:searchStr, a:type, 0)
 
     call s:MoveCursor(a:count, a:dir, pattern, a:shouldSaveMark, a:mode)
     call s:EnableHighlight()
@@ -237,7 +303,7 @@ function! s:EnableHighlight(...)
     if a:0
         let pattern = a:1
     else
-        let pattern = s:GetPatternFromInput(s:lastSearch, s:lastSearchType, s:lastSearchDir, 1)
+        let pattern = s:GetPatternFromInput(s:lastSearch, s:lastSearchType, 1)
     endif
 
     call s:RemoveHighlight()
@@ -303,3 +369,4 @@ function! s:RepeatSearchBackward(count, mode)
         call s:RunSearch(a:count, s:lastSearch, dir, s:lastSearchType, shouldSaveMark, a:mode)
     endif
 endfunction
+
