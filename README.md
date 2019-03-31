@@ -25,6 +25,7 @@ This plugin also adds the following behaviour:
 - Multiline - Can search across multiple lines or continue searching across multiple lines using `;` and `,` keys
 - Highlighting - Highlights all matching characters on current line, previous matching line, and next matching line
 - Allows repeating `t` and `T` commands using `;` or `,` commands
+- Changes the way `t` and `T` repeat to be consistent.  If you start with `t`, then repeat with `;`, then go back with `,`, you'll be at the same place (which is not the case with normal vim)
 
 It's also worth noting that it only adds the new position to the jumplist if you've changed lines
 
