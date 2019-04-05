@@ -90,7 +90,9 @@ function! s:InputChar()
 endfunction
 
 function! s:RemoveHighlight()
-    silent! call matchdelete(w:charHighlightId)
+    if w:charHighlightId != -1
+        silent! call matchdelete(w:charHighlightId)
+    endif
     let w:charHighlightId = -1
 endfunction
 
