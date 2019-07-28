@@ -18,7 +18,10 @@ def includeBuildsFile = file("includedBuilds.txt")
 
 if (includeBuildsFile.exists()) {
   for (def line : includeBuildsFile.readLines()) {
-    includeBuild line
+    // Use # for comments
+    if (!line.startsWith('#')) {
+      includeBuild line
+    }
   }
 }
 
