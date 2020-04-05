@@ -23,13 +23,13 @@ nnoremap <expr> <silent> <plug>NotableFtSearchFBackward ':<c-u>call <sid>Search(
 nnoremap <expr> <silent> <plug>NotableFtSearchTForward ':<c-u>call <sid>Search('. v:count . ', "' . <sid>InputChar() . '", "f", "t", "n")<cr>'
 nnoremap <expr> <silent> <plug>NotableFtSearchTBackward ':<c-u>call <sid>Search('. v:count . ', "' . <sid>InputChar() . '", "b", "t", "n")<cr>'
 
-xnoremap <expr> <plug>NotableFtRepeatSearchForward '<esc>:<c-u>call <sid>RepeatSearchForward('. v:count . ', "x")<cr>m>gv'
-xnoremap <expr> <plug>NotableFtRepeatSearchBackward '<esc>:<c-u>call <sid>RepeatSearchBackward('. v:count . ', "x")<cr>m>gv'
-
-xnoremap <expr> <silent> <plug>NotableFtSearchFForward '<esc>`>:<c-u>call <sid>Search('. v:count . ', "'. <sid>InputChar() . '", "f", "f", "x")<cr>m>gv'
-xnoremap <expr> <silent> <plug>NotableFtSearchFBackward '<esc>:<c-u>call <sid>Search('. v:count . ', "'. <sid>InputChar() . '", "b", "f", "x")<cr>m>gv'
-xnoremap <expr> <silent> <plug>NotableFtSearchTForward ':<c-u>call <sid>Search('. v:count . ', "'. <sid>InputChar() . '", "f", "t", "x")<cr>m>gv'
-xnoremap <expr> <silent> <plug>NotableFtSearchTBackward '<esc>:<c-u>call <sid>Search('. v:count . ', "'. <sid>InputChar() . '", "b", "t", "x")<cr>m>gv'
+" We need to add `> to the end of these maps because otherwise, when we hit 'j' or 'k', it resets to the beginning
+xnoremap <expr> <plug>NotableFtRepeatSearchForward '<esc>:<c-u>call <sid>RepeatSearchForward('. v:count . ', "x")<cr>m>gv`>'
+xnoremap <expr> <plug>NotableFtRepeatSearchBackward '<esc>:<c-u>call <sid>RepeatSearchBackward('. v:count . ', "x")<cr>m>gv`>'
+xnoremap <expr> <silent> <plug>NotableFtSearchFForward '<esc>:<c-u>call <sid>Search('. v:count . ', "'. <sid>InputChar() . '", "f", "f", "x")<cr>m>gv`>'
+xnoremap <expr> <silent> <plug>NotableFtSearchFBackward '<esc>:<c-u>call <sid>Search('. v:count . ', "'. <sid>InputChar() . '", "b", "f", "x")<cr>m>gv`>'
+xnoremap <expr> <silent> <plug>NotableFtSearchTForward ':<c-u>call <sid>Search('. v:count . ', "'. <sid>InputChar() . '", "f", "t", "x")<cr>m>gv`>'
+xnoremap <expr> <silent> <plug>NotableFtSearchTBackward '<esc>:<c-u>call <sid>Search('. v:count . ', "'. <sid>InputChar() . '", "b", "t", "x")<cr>m>gv`>'
 
 onoremap <plug>NotableFtRepeatSearchForward :call <sid>RepeatSearchForward(v:count, 'o')<cr>
 onoremap <plug>NotableFtRepeatSearchBackward :call <sid>RepeatSearchBackward(v:count, 'o')<cr>
