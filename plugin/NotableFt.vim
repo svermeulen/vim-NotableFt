@@ -122,11 +122,6 @@ function! s:Search(count, char, dir, type, mode)
     let s:lastSearchDir = a:dir
 
     call s:RunSearch(a:count, a:char, a:dir, a:type, 1, a:mode)
-
-    if a:type ==# 'p' && a:mode ==# 'o'
-        " Not 100% sure why this is necessary in this case but it is
-        normal! l
-    endif
 endfunction
 
 function! s:GetPatternFromInput(searchStr, type, forHighlight)
@@ -204,7 +199,9 @@ function! s:GetPatternFromInput(searchStr, type, forHighlight)
     endif
 
     if searchStr =~# '\v[A-Z]'
-        if a:type ==# 'f' || a:type ==# 'p' || a:forHighlight
+        if a:type ==# 'p'
+            return '\c' . tolower(searchStr) . '\zs\.'
+        elseif a:type ==# 'f' || a:forHighlight
             return '\c' . tolower(searchStr)
         else
             if s:lastSearchDir == 'f'
@@ -214,7 +211,9 @@ function! s:GetPatternFromInput(searchStr, type, forHighlight)
             endif
         endif
     else
-        if a:type ==# 'f' || a:type ==# 'p'
+        if a:type ==# 'p'
+            return '\C\(' . searchStr . '\zs' . eolOrNonWordOrUpperCaseChar . '\|' . bolOrNonWordChar . searchStr . '\zs' . '\.\|' . toupper(searchStr) . '\zs\.\)'
+        elseif a:type ==# 'f'
             return '\C\(' . searchStr . '\ze' . eolOrNonWordOrUpperCaseChar . '\|' . bolOrNonWordChar . '\zs' . searchStr . '\|' . toupper(searchStr) . '\)'
         else
             if s:lastSearchDir == 'f'
