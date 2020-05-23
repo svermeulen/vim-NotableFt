@@ -130,6 +130,7 @@ function! s:GetPatternFromInput(searchStr, type, forHighlight)
     let bolOrNonWordChar = '\(' . nonWordChar . '\|\^\)' 
     let uppercaseChar = '\[A-Z]'
     let eolOrNonWordOrUpperCaseChar = '\(' . nonWordChar . '\|\$\|\[A-Z]\)' 
+    let eolOrCharacter = '\(\.\|\$\)' 
 
     if a:searchStr ==# ','
         let searchStr = '\(,\|<\)'
@@ -212,7 +213,7 @@ function! s:GetPatternFromInput(searchStr, type, forHighlight)
         endif
     else
         if a:type ==# 'p'
-            return '\C\(' . searchStr . '\zs' . eolOrNonWordOrUpperCaseChar . '\|' . bolOrNonWordChar . searchStr . '\zs' . '\.\|' . toupper(searchStr) . '\zs\.\)'
+            return '\C\(' . searchStr . '\zs' . eolOrNonWordOrUpperCaseChar . '\|' . bolOrNonWordChar . searchStr . '\zs' . eolOrCharacter . '\|' . toupper(searchStr) . '\zs' . eolOrCharacter . '\)'
         elseif a:type ==# 'f'
             return '\C\(' . searchStr . '\ze' . eolOrNonWordOrUpperCaseChar . '\|' . bolOrNonWordChar . '\zs' . searchStr . '\|' . toupper(searchStr) . '\)'
         else
@@ -244,7 +245,22 @@ function! s:RunSearch(count, searchStr, dir, type, shouldSaveMark, mode)
 
     let pattern = s:GetPatternFromInput(a:searchStr, a:type, 0)
 
+    if a:type == 'p'
+        let g:NotableFt_PreviousVedit = &virtualedit
+        set virtualedit=onemore
+    endif
+
     call s:MoveCursor(a:count, a:dir, pattern, a:shouldSaveMark, a:mode)
+
+    if a:type == 'p'
+        " Hacky but seemingly necessary fix to allow doing things like cfk where 'k' is the last
+        " character on the line
+        augroup notableft_reset_virtualedit
+            autocmd!
+            autocmd TextChanged,CursorMoved <buffer> exec "set virtualedit=" . g:NotableFt_PreviousVedit | autocmd! notableft_reset_virtualedit
+        augroup END
+    endif
+
     call s:EnableHighlight()
 
     call s:AttachSearchToggleAutoCommands()
