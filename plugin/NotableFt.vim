@@ -130,7 +130,6 @@ function! s:GetPatternFromInput(searchStr, type, forHighlight)
     let bolOrNonWordChar = '\(' . nonWordChar . '\|\^\)' 
     let uppercaseChar = '\[A-Z]'
     let eolOrNonWordOrUpperCaseChar = '\(' . nonWordChar . '\|\$\|\[A-Z]\)' 
-    let eolOrCharacter = '\(\.\|\$\)' 
 
     if a:searchStr ==# ','
         let searchStr = '\(,\|<\)'
@@ -213,7 +212,7 @@ function! s:GetPatternFromInput(searchStr, type, forHighlight)
         endif
     else
         if a:type ==# 'p'
-            return '\C\(' . searchStr . '\zs' . eolOrNonWordOrUpperCaseChar . '\|' . bolOrNonWordChar . searchStr . '\zs' . eolOrCharacter . '\|' . toupper(searchStr) . '\zs' . eolOrCharacter . '\)'
+            return '\C\(' . searchStr . '\zs' . eolOrNonWordOrUpperCaseChar . '\|' . bolOrNonWordChar . searchStr . '\zs' . '\.\|' . toupper(searchStr) . '\zs' . '\.\)'
         elseif a:type ==# 'f'
             return '\C\(' . searchStr . '\ze' . eolOrNonWordOrUpperCaseChar . '\|' . bolOrNonWordChar . '\zs' . searchStr . '\|' . toupper(searchStr) . '\)'
         else
