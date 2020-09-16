@@ -10,29 +10,29 @@ let s:lastSearchDir = 'f'
 " Plugs
 """""""""""""""""""""""
 
-nnoremap <plug>NotableFtForceEnableHighlight :call <sid>EnableHighlight()<cr>
+nnoremap <silent> <plug>NotableFtForceEnableHighlight :call <sid>EnableHighlight()<cr>
 
-nnoremap <plug>NotableFtRepeatSearchForward :<c-u>call <sid>RepeatSearchForward(v:count, 'n')<cr>
-nnoremap <plug>NotableFtRepeatSearchBackward :<c-u>call <sid>RepeatSearchBackward(v:count, 'n')<cr>
+nnoremap <silent> <plug>NotableFtRepeatSearchForward :<c-u>call <sid>RepeatSearchForward(v:count, 'n')<cr>
+nnoremap <silent> <plug>NotableFtRepeatSearchBackward :<c-u>call <sid>RepeatSearchBackward(v:count, 'n')<cr>
 
-nnoremap <plug>NotableFtRepeatSearchCenterForward :<c-u>call <sid>RepeatSearchForward(v:count, 'n')<cr>zz
-nnoremap <plug>NotableFtRepeatSearchCenterBackward :<c-u>call <sid>RepeatSearchBackward(v:count, 'n')<cr>zz
+nnoremap <silent> <plug>NotableFtRepeatSearchCenterForward :<c-u>call <sid>RepeatSearchForward(v:count, 'n')<cr>zz
+nnoremap <silent> <plug>NotableFtRepeatSearchCenterBackward :<c-u>call <sid>RepeatSearchBackward(v:count, 'n')<cr>zz
 
 nnoremap <expr> <silent> <plug>NotableFtSearchFForward ':<c-u>call <sid>Search('. v:count . ', "' . <sid>InputChar() . '", "f", "f", "n")<cr>'
 nnoremap <expr> <silent> <plug>NotableFtSearchFBackward ':<c-u>call <sid>Search('. v:count . ', "' . <sid>InputChar() . '", "b", "f", "n")<cr>'
 nnoremap <expr> <silent> <plug>NotableFtSearchTForward ':<c-u>call <sid>Search('. v:count . ', "' . <sid>InputChar() . '", "f", "t", "n")<cr>'
 nnoremap <expr> <silent> <plug>NotableFtSearchTBackward ':<c-u>call <sid>Search('. v:count . ', "' . <sid>InputChar() . '", "b", "t", "n")<cr>'
 
-xnoremap <expr> <plug>NotableFtRepeatSearchForward '<esc>:<c-u>call <sid>RepeatSearchForward('. v:count . ', "x")<cr>m>gv'
-xnoremap <expr> <plug>NotableFtRepeatSearchBackward '<esc>:<c-u>call <sid>RepeatSearchBackward('. v:count . ', "x")<cr>m>gv'
+xnoremap <expr> <silent> <plug>NotableFtRepeatSearchForward '<esc>:<c-u>call <sid>RepeatSearchForward('. v:count . ', "x")<cr>m>gv'
+xnoremap <expr> <silent> <plug>NotableFtRepeatSearchBackward '<esc>:<c-u>call <sid>RepeatSearchBackward('. v:count . ', "x")<cr>m>gv'
 
 xnoremap <expr> <silent> <plug>NotableFtSearchFForward '<esc>`>:<c-u>call <sid>Search('. v:count . ', "'. <sid>InputChar() . '", "f", "f", "x")<cr>m>gv'
 xnoremap <expr> <silent> <plug>NotableFtSearchFBackward '<esc>:<c-u>call <sid>Search('. v:count . ', "'. <sid>InputChar() . '", "b", "f", "x")<cr>m>gv'
 xnoremap <expr> <silent> <plug>NotableFtSearchTForward ':<c-u>call <sid>Search('. v:count . ', "'. <sid>InputChar() . '", "f", "t", "x")<cr>m>gv'
 xnoremap <expr> <silent> <plug>NotableFtSearchTBackward '<esc>:<c-u>call <sid>Search('. v:count . ', "'. <sid>InputChar() . '", "b", "t", "x")<cr>m>gv'
 
-onoremap <plug>NotableFtRepeatSearchForward :call <sid>RepeatSearchForward(v:count, 'o')<cr>
-onoremap <plug>NotableFtRepeatSearchBackward :call <sid>RepeatSearchBackward(v:count, 'o')<cr>
+onoremap <silent> <plug>NotableFtRepeatSearchForward :call <sid>RepeatSearchForward(v:count, 'o')<cr>
+onoremap <silent> <plug>NotableFtRepeatSearchBackward :call <sid>RepeatSearchBackward(v:count, 'o')<cr>
 
 onoremap <expr> <silent> <plug>NotableFtSearchFForward ':call <sid>Search('. v:count . ', "'. <sid>InputChar() . '", "f", "p", "o")<cr>'
 onoremap <expr> <silent> <plug>NotableFtSearchFBackward ':call <sid>Search('. v:count . ', "'. <sid>InputChar() . '", "b", "f", "o")<cr>'
