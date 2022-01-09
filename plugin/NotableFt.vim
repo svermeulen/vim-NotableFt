@@ -8,7 +8,6 @@ let s:lastSearchDir = 'f'
 
 let s:highlightId = v:null
 let s:highlightWin = v:null
-let s:highlightLoc = v:null
 
 """""""""""""""""""""""
 " Plugs
@@ -87,18 +86,17 @@ endfunction
 function! s:TryRemoveHighlight()
     if s:highlightWin is v:null
       call s:Assert(s:highlightId is v:null)
-      call s:Assert(s:highlightLoc is v:null)
       return
     endif
 
     call s:Assert(s:highlightId isnot v:null)
-    call s:Assert(s:highlightLoc isnot v:null)
 
     silent! call matchdelete(s:highlightId, s:highlightWin)
 
     let s:highlightId = v:null
-    let s:highlightLoc = v:null
     let s:highlightWin = v:null
+
+    autocmd! NotableFtHighlight *
 endfunction
 
 function! s:Assert(cond)
@@ -320,8 +318,13 @@ function! s:EnableHighlight(...)
     let matchQuery = matchQuery .'\%>' . max([0, prevMatchLine-1]) . 'l\%<' . (nextMatchLine+1) . 'l'
 
     let s:highlightId = matchadd('Search', matchQuery, 2, -1)
-    let s:highlightLoc = getpos('.')
     let s:highlightWin = nvim_get_current_win()
+
+    augroup NotableFtHighlight
+        autocmd!
+        autocmd InsertEnter,WinLeave,BufLeave * call <sid>TryRemoveHighlight()
+        autocmd CursorMoved * autocmd NotableFtHighlight CursorMoved * call <sid>TryRemoveHighlight()
+    augroup END
 endfunction
 
 function! s:RepeatSearchForward(count, mode)
