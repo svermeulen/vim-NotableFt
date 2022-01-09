@@ -6,6 +6,10 @@ let s:lastSearch = ''
 let s:lastSearchType = 'f'
 let s:lastSearchDir = 'f'
 
+let s:highlightId = v:null
+let s:highlightWin = v:null
+let s:highlightLoc = v:null
+
 """""""""""""""""""""""
 " Plugs
 """""""""""""""""""""""
@@ -69,15 +73,6 @@ endif
 " Functions
 """""""""""""""""""""""
 
-function! s:AttachSearchToggleAutoCommands()
-    augroup SearchTypeToggle
-        autocmd!
-        autocmd InsertEnter,WinLeave,BufLeave <buffer> autocmd! SearchTypeToggle * <buffer>
-        "set up *nested* CursorMoved autocmd to skip the _first_ CursorMoved event.
-        autocmd CursorMoved <buffer> autocmd SearchTypeToggle CursorMoved <buffer> autocmd! SearchTypeToggle * <buffer>
-    augroup END
-endfunction
-
 function! s:InputChar()
     let charNr = getchar()
     let char = nr2char(charNr)
@@ -89,19 +84,21 @@ function! s:InputChar()
     return escape(char, '\"')
 endfunction
 
-function! s:RemoveHighlight()
-    if get(w:, 'charHighlightId', -1) != -1
-        silent! call matchdelete(w:charHighlightId)
+function! s:TryRemoveHighlight()
+    if s:highlightWin is v:null
+      call s:Assert(s:highlightId is v:null)
+      call s:Assert(s:highlightLoc is v:null)
+      return
     endif
-    let w:charHighlightId = -1
-endfunction
 
-function! s:AttachAutoCommands()
-    augroup NotableFtHighlight
-        autocmd!
-        autocmd InsertEnter,WinLeave,BufLeave <buffer> call <sid>RemoveHighlight() | autocmd! NotableFtHighlight * <buffer>
-        autocmd CursorMoved <buffer> autocmd NotableFtHighlight CursorMoved <buffer> call <sid>RemoveHighlight() | autocmd! NotableFtHighlight * <buffer>
-    augroup END
+    call s:Assert(s:highlightId isnot v:null)
+    call s:Assert(s:highlightLoc isnot v:null)
+
+    silent! call matchdelete(s:highlightId, s:highlightWin)
+
+    let s:highlightId = v:null
+    let s:highlightLoc = v:null
+    let s:highlightWin = v:null
 endfunction
 
 function! s:Assert(cond)
@@ -261,8 +258,6 @@ function! s:RunSearch(count, searchStr, dir, type, shouldSaveMark, mode)
     endif
 
     call s:EnableHighlight()
-
-    call s:AttachSearchToggleAutoCommands()
 endfunction
 
 function! s:MoveCursor(count, dir, pattern, shouldSaveMark, mode)
@@ -305,8 +300,7 @@ function! s:EnableHighlight(...)
         let pattern = s:GetPatternFromInput(s:lastSearch, s:lastSearchType, 1)
     endif
 
-    call s:RemoveHighlight()
-    call s:AttachAutoCommands()
+    call s:TryRemoveHighlight()
 
     let matchQuery = '\V' . pattern
     let currentLine = line('.')
@@ -325,14 +319,16 @@ function! s:EnableHighlight(...)
     " Only show the matches in the above and below lines
     let matchQuery = matchQuery .'\%>' . max([0, prevMatchLine-1]) . 'l\%<' . (nextMatchLine+1) . 'l'
 
-    let w:charHighlightId = matchadd('Search', matchQuery, 2, get(w:, 'charHighlightId', -1))
+    let s:highlightId = matchadd('Search', matchQuery, 2, -1)
+    let s:highlightLoc = getpos('.')
+    let s:highlightWin = nvim_get_current_win()
 endfunction
 
 function! s:RepeatSearchForward(count, mode)
     if empty(s:lastSearch)
         echo 'Nothing to repeat'
     else
-        let shouldSaveMark = (get(w:, "charHighlightId", -1) == -1)
+        let shouldSaveMark = s:highlightId isnot v:null
 
         if get(g:, 'NotableFtUseFixedDirection', 0)
             let dir = 'f'
@@ -353,7 +349,7 @@ function! s:RepeatSearchBackward(count, mode)
     if empty(s:lastSearch)
         echo 'Nothing to repeat'
     else
-        let shouldSaveMark = (get(w:, "charHighlightId", -1) == -1)
+        let shouldSaveMark = s:highlightId isnot v:null
 
         if get(g:, 'NotableFtUseFixedDirection', 0)
             let dir = 'b'
@@ -369,3 +365,7 @@ function! s:RepeatSearchBackward(count, mode)
     endif
 endfunction
 
+augroup notableft_reset_highlight
+    autocmd!
+    autocmd InsertEnter,WinLeave,BufLeave * call <sid>TryRemoveHighlight()
+augroup END
